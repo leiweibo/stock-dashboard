@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+  db:
+    container_name: stockserver-mysql-db
+    image: mysql:5.7
+    volumes:
+      - stock_db_volume:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: root
+      MYSQL_USER: stock_user
+      MYSQL_PASSWORD: stock_passwd
+
+  data-server:
+    build:
+      context: ./data-server
+      args: 
+        JAR_FILE: stockdata-0.0.1-SNAPSHOT.jar
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    image: stock-data-server:0.0.1
+    ports:
+      - "8001:8080"
+    restart: always
+
+volumes:
+  stock_db_volume: {}
+networks:
+  stock-server-network:
+    driver: bridge
