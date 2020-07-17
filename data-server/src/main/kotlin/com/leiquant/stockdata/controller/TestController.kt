@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
 class TestController {
-    @GetMapping("/hello")
-    @ResponseBody
-    fun hellMethod(): ApiResult {
-        return ApiResult("Hello World")
-    }
+  @GetMapping("/hello")
+  @ResponseBody
+  fun hellMethod(): ApiResult {
+    return ApiResult("Hello World")
+  }
 }
