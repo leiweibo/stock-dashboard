@@ -1,6 +1,0 @@
-server:
-  port: 8080
-
-eastmoney:
-  northmoney:
-    url: http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=HSGTZJZS&token=70f12f2f4f091e459a279469fe49eca5&ps=5000&js=var%20PhvFDFVR=({data:[(x)]})
