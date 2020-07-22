@@ -22,6 +22,7 @@ dependencies {
 	implementation("org.apache.httpcomponents:httpclient")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.projectlombok:lombok")
+	implementation("com.alibaba:fastjson:1.2.70")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")

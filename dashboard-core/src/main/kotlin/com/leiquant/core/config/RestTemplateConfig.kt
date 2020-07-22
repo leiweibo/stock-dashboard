@@ -1,5 +1,7 @@
 package com.leiquant.core.config
 
+import com.leiquant.core.config.convert.CustomMappingJackson2HttpMessageConverter
+import com.leiquant.core.config.handler.CustomResponseErrorHandler
 import com.leiquant.core.config.interceptors.TrackLogClientHttpRequestInterceptor
 import org.apache.http.client.HttpClient
 import org.apache.http.client.config.RequestConfig
@@ -45,15 +47,31 @@ class RestTemplateConfig {
   private val validateAfterInactivity: Int? = null
 
   @Autowired
-  private lateinit var requestInterceptor: TrackLogClientHttpRequestInterceptor
+  private lateinit var trackLogInterceptor: TrackLogClientHttpRequestInterceptor
+
+  @Autowired
+  private lateinit var requestInterceptor: ClientHttpRequestInterceptor
+
+  @Autowired
+  private lateinit var errorHandler: CustomResponseErrorHandler
+
+  @Autowired
+  private lateinit var converter: CustomMappingJackson2HttpMessageConverter
 
   @Bean
   fun restTemplate(simpleClientHttpRequestFactory: ClientHttpRequestFactory): RestTemplate {
     var template = RestTemplate(httpRequestFactory())
     var interceptors: MutableList<ClientHttpRequestInterceptor> = mutableListOf()
     interceptors.add(requestInterceptor)
+    interceptors.add(trackLogInterceptor)
     template.interceptors = interceptors
     template.requestFactory = simpleClientHttpRequestFactory
+    template.errorHandler = errorHandler
+
+    val messageConverters = template.messageConverters
+    messageConverters.add(CustomMappingJackson2HttpMessageConverter())
+    template.messageConverters = messageConverters
+
     return template
   }
 
