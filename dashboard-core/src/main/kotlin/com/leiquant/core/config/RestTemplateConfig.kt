@@ -2,6 +2,7 @@ package com.leiquant.core.config
 
 import com.leiquant.core.config.convert.CustomMappingJackson2HttpMessageConverter
 import com.leiquant.core.config.handler.CustomResponseErrorHandler
+import com.leiquant.core.config.interceptors.HeadClientHttpRequestInterceptor
 import com.leiquant.core.config.interceptors.TrackLogClientHttpRequestInterceptor
 import org.apache.http.client.HttpClient
 import org.apache.http.client.config.RequestConfig
@@ -14,6 +15,7 @@ import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.ClientHttpRequestFactory
@@ -50,7 +52,7 @@ class RestTemplateConfig {
   private lateinit var trackLogInterceptor: TrackLogClientHttpRequestInterceptor
 
   @Autowired
-  private lateinit var requestInterceptor: ClientHttpRequestInterceptor
+  private lateinit var requestInterceptor: HeadClientHttpRequestInterceptor
 
   @Autowired
   private lateinit var errorHandler: CustomResponseErrorHandler
@@ -58,21 +60,22 @@ class RestTemplateConfig {
   @Autowired
   private lateinit var converter: CustomMappingJackson2HttpMessageConverter
 
+  @Autowired
+  private lateinit var restTemplateBuilder: RestTemplateBuilder
+
+  @Autowired
+  private lateinit var requestFactory: ClientHttpRequestFactory
+
+
   @Bean
-  fun restTemplate(simpleClientHttpRequestFactory: ClientHttpRequestFactory): RestTemplate {
-    var template = RestTemplate(httpRequestFactory())
+  fun restTemplate(): RestTemplate {
     var interceptors: MutableList<ClientHttpRequestInterceptor> = mutableListOf()
     interceptors.add(requestInterceptor)
     interceptors.add(trackLogInterceptor)
-    template.interceptors = interceptors
-    template.requestFactory = simpleClientHttpRequestFactory
-    template.errorHandler = errorHandler
-
-    val messageConverters = template.messageConverters
-    messageConverters.add(converter)
-    template.messageConverters = messageConverters
-
-    return template
+    return restTemplateBuilder.interceptors(interceptors)
+//        .messageConverters(converter)
+        .errorHandler(errorHandler)
+        .requestFactory { requestFactory }.build()
   }
 
   @Bean

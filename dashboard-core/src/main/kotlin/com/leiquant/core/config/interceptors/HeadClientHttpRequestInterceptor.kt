@@ -10,10 +10,8 @@ import org.springframework.http.client.ClientHttpResponse
 import org.springframework.stereotype.Component
 
 
-
-
 @Component
-class HeadClientHttpRequestInterceptor: ClientHttpRequestInterceptor {
+class HeadClientHttpRequestInterceptor : ClientHttpRequestInterceptor {
   val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
   override fun intercept(httpRequest: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {

@@ -1,6 +1,5 @@
 package com.leiquant.core.config.interceptors
 
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
@@ -21,9 +20,9 @@ class TrackLogClientHttpRequestInterceptor : ClientHttpRequestInterceptor {
   //  @Exception(IOException::class)
   private fun trackResponse(httpResponse: ClientHttpResponse) {
     log.info("============================response begin==========================================");
-    log.info("Status code  : {}", httpResponse.getStatusCode());
-    log.info("Status text  : {}", httpResponse.getStatusText());
-    log.info("Headers      : {}", httpResponse.getHeaders());
+    log.info("Status code  : {}", httpResponse.statusCode);
+    log.info("Status text  : {}", httpResponse.statusText);
+    log.info("Headers      : {}", httpResponse.headers);
     log.info("=======================response end=================================================");
   }
 

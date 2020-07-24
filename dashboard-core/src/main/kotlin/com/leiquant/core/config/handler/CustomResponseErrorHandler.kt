@@ -14,7 +14,7 @@ class CustomResponseErrorHandler : DefaultResponseErrorHandler() {
 
   override fun hasError(response: ClientHttpResponse): Boolean {
     val statusCode: HttpStatus = response.statusCode
-    if(statusCode.is3xxRedirection){
+    if (statusCode.is3xxRedirection) {
       return true;
     }
     return super.hasError(response);
@@ -22,7 +22,7 @@ class CustomResponseErrorHandler : DefaultResponseErrorHandler() {
 
   override fun handleError(response: ClientHttpResponse) {
     val statusCode = response.statusCode
-    if(statusCode.is3xxRedirection){
+    if (statusCode.is3xxRedirection) {
       log.info("########30X错误，需要重定向！##########");
       return;
     }
