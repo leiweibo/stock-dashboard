@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate
 
 @Service
 class NorthMoneyServiceImpl: NorthMoneyService {
-  @Autowired lateinit var restTemplate: RestTemplate
   @Value("\${eastmoney.northmoney.url}") lateinit var serverUrl:String
 
   override fun getNorthMoney(startDate: String, endDate: String) {

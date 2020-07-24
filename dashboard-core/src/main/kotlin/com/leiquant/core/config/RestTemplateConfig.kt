@@ -69,7 +69,7 @@ class RestTemplateConfig {
     template.errorHandler = errorHandler
 
     val messageConverters = template.messageConverters
-    messageConverters.add(CustomMappingJackson2HttpMessageConverter())
+    messageConverters.add(converter)
     template.messageConverters = messageConverters
 
     return template
